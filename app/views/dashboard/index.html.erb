@@ -1,0 +1,11 @@
+
+<% if current_user %>
+  <h1>Dashboard</h1>
+  <p>Welcome, <%= current_user.email %>!</p>
+
+  <%= button_to "Send Email", send_email_path, method: :post %>
+  <%= render partial: 'webhook_event_data', locals: {webhook_events: @webhook_events} %>
+<% else %>
+  <h1> Anuj Chutiyo, Tame Login Karo </h1> 
+  <%= link_to 'Login', new_sessions_path %>
+<% end %>

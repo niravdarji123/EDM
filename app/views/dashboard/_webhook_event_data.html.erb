@@ -1,0 +1,18 @@
+<table>
+  <thead>
+    <tr>
+      <td> Delivered </td>
+      <td> Opened </td>
+      <td> Clicked </td>
+      <td> Bounced </td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> <%= webhook_events.delivered.count %> </td>
+      <td> <%= webhook_events.opened.count %> </td>
+      <td> <%= webhook_events.clicked.count %> </td>
+      <td> <%= webhook_events.bounced.count %> </td>
+    </tr>
+  </tbody>
+</table>
