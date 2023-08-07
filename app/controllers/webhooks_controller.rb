@@ -1,28 +1,27 @@
 class WebhooksController < ApplicationController
   def sendgrid_notification
-    json = params["webhook"]["_json"][0]
+    json = params.dig("webhook", "_json", 0)
 
-    email = json["email"]
-    event = json["event"]
-    timestamp = json["timestamp"]
-    ip = json["ip"]
-    sg_event_id = json["sg_event_id"]
-    sg_message_id = json["sg_message_id"]
-    sg_content_type = json["sg_content_type"]
+    return head :bad_request if json.blank?
 
-    if ['bounce', 'open', 'delivered', 'click'].include?(event)
-      event_count = WebhookEvent.new(
-        event_type: event,
-        email: email,
-        sg_message_id: sg_message_id,
-        ip: ip,
-        sg_event_id: sg_event_id,
-        timestamp: timestamp,
-        sg_content_type: sg_content_type,
+    if %w[bounce open delivered click].include?(event)
+      event_count = WebhookEvent.create(
+        event_type: json["event"],
+        email: json["email"],
+        sg_message_id: json["sg_message_id"],
+        ip: json["ip"],
+        sg_event_id: json["sg_event_id"],
+        timestamp: json["timestamp"],
+        sg_content_type: json["sg_content_type"]
       )
-      event_count.save
 
-      head :ok
+      if event_count.persisted?
+        head :ok
+      else
+        head :unprocessable_entity
+      end
+    else
+      head :bad_request
     end
   end
 end
