@@ -9,7 +9,7 @@ class DashboardController < ApplicationController
         {
           "to": [
             {
-              "email": "nirmalvajaa@gmail.com"
+              "email": "nirmalvaja123@gmail.com"
             }
           ],
           "subject": "Sending with Twilio SendGrid is Fun"
