@@ -1,10 +1,18 @@
+<div class="centered-content">
+  <% if current_user %>
+    <h1>Dashboard</h1>
+    <%= button_to "Log Out", logout_path, method: :delete, form_class: "logout-button" %>
+    <p>Welcome, <%= current_user.email %>!</p>
 
-<% if current_user %>
-  <h1>Dashboard</h1>
-  <p>Welcome, <%= current_user.email %>!</p>
-
-  <%= button_to "Send Email", send_email_path, method: :post %>
-  <%= render partial: 'webhook_event_data', locals: {webhook_events: @webhook_events} %>
-<% else %>
-  <%= link_to 'Login', new_sessions_path %>
-<% end %>
+    <%= form_tag send_email_path, method: :post do %>
+      <%= text_field_tag :email_address, "", placeholder: "Enter Email Address" %>
+      <%= button_tag "Send Email" %>
+    <% end %>
+    
+    <div style="margin-top:10px;">
+      <%= render partial: 'webhook_event_data', locals: {webhook_events: @webhook_events} %>
+    </div>
+  <% else %>
+    <%= link_to 'Login', new_sessions_path %>
+  <% end %>
+</div>

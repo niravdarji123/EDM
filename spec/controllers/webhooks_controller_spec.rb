@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe WebhooksController, type: :controller do
-
   describe 'POST #sendgrid_notification' do
     context 'with valid bounce event type' do
       let(:valid_json) do
@@ -130,9 +129,9 @@ RSpec.describe WebhooksController, type: :controller do
         }.not_to change(WebhookEvent, :count)
       end
 
-      it 'returns HTTP 204 status' do
+      it 'returns HTTP Status 400' do
         post :sendgrid_notification, params: { webhook: { _json: [invalid_json] } }
-        expect(response).to have_http_status(:no_content)
+        expect(response).to have_http_status(:bad_request)
       end
     end
   end

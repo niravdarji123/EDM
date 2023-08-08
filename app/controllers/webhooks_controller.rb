@@ -4,7 +4,7 @@ class WebhooksController < ApplicationController
 
     return head :bad_request if json.blank?
 
-    if %w[bounce open delivered click].include?(event)
+    if %w[bounce open delivered click].include?(json["event"])
       event_count = WebhookEvent.create(
         event_type: json["event"],
         email: json["email"],

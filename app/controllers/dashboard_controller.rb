@@ -4,7 +4,7 @@ class DashboardController < ApplicationController
   end
 
   def send_email
-    if sendgrid_email_successful?
+    if sendgrid_email_successful?(send_email_params["email_address"])
       redirect_to root_path, notice: 'Your email has been sent.'
     else
       redirect_to root_path, alert: 'Error in sending email.'
@@ -14,15 +14,15 @@ class DashboardController < ApplicationController
 
   private
 
-  def sendgrid_email_successful?
+  def sendgrid_email_successful?(email_address) 
     data = {
       personalizations: [
         {
-          to: [{ email: 'nirmalvaja123@gmail.com' }],
+          to: [{ email: email_address }],
           subject: 'Sending with Twilio SendGrid'
         }
       ],
-      from: { email: 'nirav.darji@neosoftmail.com' },
+      from: { email: ENV['SENDER_EMAIL_ADDRESS'] },
       content: [
         {
           type: 'text/html',
@@ -44,5 +44,9 @@ class DashboardController < ApplicationController
   rescue StandardError => e
     Rails.logger.error "Error sending email: #{e.message}"
     false
+  end
+
+  def send_email_params
+    params.permit(:email_address)
   end
 end
